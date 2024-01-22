@@ -35,7 +35,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        value: [${{ needs.copilot_environments_workflow_setup.outputs.matrix_env }}]
+        value: [dev,test]
     steps:
 
       - name: print matrix
