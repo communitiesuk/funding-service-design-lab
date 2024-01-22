@@ -15,12 +15,16 @@ jobs:
     outputs:
       matrix_env: ${{ toJSON(steps.*.outputs.env_list) }}
     steps:
-      - id: dev
+    #   - id: dev
+    #     run: |
+    #         echo "env_list=dev" >> $GITHUB_OUTPUT
+    #   - id: test
+    #     run: |
+    #         echo "env_list=test" >> $GITHUB_OUTPUT
+      - id: array
         run: |
-            echo "env_list=dev" >> $GITHUB_OUTPUT
-      - id: test
-        run: |
-            echo "env_list=test" >> $GITHUB_OUTPUT
+          export TARGETS=["dev","test"]
+          echo "env_list=$(jq -cn --argjson environments "$TARGETS" '{target: $environments}')" >> $GITHUB_OUTPUT
 
   docker-build:
     runs-on: ubuntu-latest
@@ -38,10 +42,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
-      matrix:
-        value: ${{ fromJSON( needs.copilot_environments_workflow_setup.outputs.matrix_env ) }}
+      matrix: ${{ fromJSON( needs.copilot_environments_workflow_setup.outputs.matrix_env ) }}
     steps:
 
       - name: print matrix
         shell: bash
-        run: echo matrix is ${{ matrix.value }}
+        run: echo matrix is ${{ matrix.target }}
