@@ -1,7 +1,8 @@
 name: Test Matrix value
 
 on:
-    push
+    push:
+    workflow_dispatch:
 
 env:
   DOCKER_REGISTRY: ghcr.io
