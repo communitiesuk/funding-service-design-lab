@@ -13,7 +13,7 @@ jobs:
   copilot_environments_workflow_setup:
     runs-on: ubuntu-latest
     outputs:
-      matrix_env: ${{ toJSON(steps.*.outputs.env_list) }}
+      matrix_env: ${{ steps.*.outputs.env_list }}
     steps:
     #   - id: dev
     #     run: |
@@ -43,8 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
-      matrix: 
-          target: ${{ fromJSON(needs.copilot_environments_workflow_setup.outputs.matrix_env.target) }}
+      matrix: ${{ needs.copilot_environments_workflow_setup.outputs.matrix_env }}
     steps:
 
       - name: print matrix
