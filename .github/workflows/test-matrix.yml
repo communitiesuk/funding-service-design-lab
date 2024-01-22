@@ -1,0 +1,43 @@
+name: Test Matrix value
+
+on:
+    push
+
+env:
+  DOCKER_REGISTRY: ghcr.io
+  IMAGE_NAME: "fsd-form-runner"
+  IMAGE_REPO_PATH: "ghcr.io/${{github.repository_owner}}"
+
+jobs:
+  copilot_environments_workflow_setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix_env: ${{ steps.simple_matrix.outputs.env_list }}
+    steps:
+      - id: simple_matrix
+        run: |
+            echo "env_list=[dev, test]" >> $GITHUB_OUTPUT
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: [copilot_environments_workflow_setup]
+    steps:
+      - name: debug-matrix
+        env:
+          MATRIX_ENV: ${{ needs.copilot_environments_workflow_setup.outputs.matrix_env }}
+        run: |
+          echo matrix env is $MATRIX_ENV
+
+
+  deploy:
+    needs: [copilot_environments_workflow_setup]
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 1
+      matrix:
+        value: ${{ needs.copilot_environments_workflow_setup.outputs.matrix_env }}
+    steps:
+
+      - name: print matrix
+        shell: bash
+        run: echo matrix is ${{ matrix.value }}
