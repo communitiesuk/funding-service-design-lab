@@ -16,7 +16,7 @@ jobs:
     steps:
       - id: simple_matrix
         run: |
-            echo "env_list=[dev, test]" >> $GITHUB_OUTPUT
+            echo "env_list=dev" >> $GITHUB_OUTPUT
 
   docker-build:
     runs-on: ubuntu-latest
