@@ -13,7 +13,7 @@ jobs:
   copilot_environments_workflow_setup:
     runs-on: ubuntu-latest
     outputs:
-      matrix_env: ${{ steps.*.outputs.env_list }}
+      matrix_env: ${{ steps.array.outputs.env_list }}
     steps:
     #   - id: dev
     #     run: |
