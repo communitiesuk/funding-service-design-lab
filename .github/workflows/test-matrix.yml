@@ -13,11 +13,11 @@ jobs:
   copilot_environments_workflow_setup:
     runs-on: ubuntu-latest
     outputs:
-      matrix_env: ${{ steps.simple_matrix.outputs.env_list }}
+      matrix_env: ${{ toJSON(steps.*.outputs.env_list) }}
     steps:
       - id: simple_matrix
         run: |
-            echo "env_list=[dev,test]" >> $GITHUB_OUTPUT
+            echo "env_list=dev" >> $GITHUB_OUTPUT
 
   docker-build:
     runs-on: ubuntu-latest
@@ -36,7 +36,7 @@ jobs:
     strategy:
       max-parallel: 1
       matrix:
-        value: ${{ needs.copilot_environments_workflow_setup.outputs.matrix_env }}
+        value: ${{ fromJSON( needs.copilot_environments_workflow_setup.outputs.matrix_env ) }}
     steps:
 
       - name: print matrix
