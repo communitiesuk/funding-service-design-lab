@@ -43,7 +43,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
-      matrix: ${{ needs.copilot_environments_workflow_setup.outputs.matrix_env }}
+      matrix: 
+          target: ${{ fromJSON(needs.copilot_environments_workflow_setup.outputs.matrix_env.target) }}
     steps:
 
       - name: print matrix
