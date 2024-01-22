@@ -23,7 +23,7 @@ jobs:
     #         echo "env_list=test" >> $GITHUB_OUTPUT
       - id: array
         run: |
-          export TARGETS={"target": ["dev","test"]}
+          export "TARGETS={"target": ["dev","test"]}"
           echo "env_list=$(jq -cn --argjson environments "$TARGETS" '{target: $environments}')" >> $GITHUB_OUTPUT
 
   docker-build:
