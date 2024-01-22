@@ -24,8 +24,8 @@ jobs:
       - id: array
         run: |
           export envs='["dev", "test"]'
-          jq -cn --argjson keys "$envs" '{target: $keys}'
-          echo "env_list=$(jq -cn --argjson keys "$envs" '{target: $keys}')" >> $GITHUB_OUTPUT
+          jq -cn --argjson keys "$envs" '$keys'
+          echo "env_list=$(jq -cn --argjson keys "$envs" '$keys')" >> $GITHUB_OUTPUT
 
   docker-build:
     runs-on: ubuntu-latest
@@ -43,7 +43,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 1
-      matrix: ${{ needs.copilot_environments_workflow_setup.outputs.matrix_env }}
+      matrix: 
+          target: ${{ needs.copilot_environments_workflow_setup.outputs.matrix_env }}
     steps:
 
       - name: print matrix
