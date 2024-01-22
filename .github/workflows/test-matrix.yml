@@ -15,9 +15,12 @@ jobs:
     outputs:
       matrix_env: ${{ toJSON(steps.*.outputs.env_list) }}
     steps:
-      - id: simple_matrix
+      - id: dev
         run: |
-            echo "env_list=\"dev\", \"test\"" >> $GITHUB_OUTPUT
+            echo "env_list=dev" >> $GITHUB_OUTPUT
+      - id: test
+        run: |
+            echo "env_list=test" >> $GITHUB_OUTPUT
 
   docker-build:
     runs-on: ubuntu-latest
