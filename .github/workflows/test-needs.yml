@@ -1,4 +1,4 @@
-name: Test Matrix value
+name: Test job ordering
 
 on:
     push:
@@ -38,7 +38,7 @@ jobs:
   one:
     needs: [setup_job_list]
     runs-on: ubuntu-latest
-    if: ${{ contains(fromJSON(needs.copilot_environments_workflow_setup.outputs.jobs_to_run), "one") }}
+    if: ${{ contains(fromJSON(needs.setup_job_list.outputs.jobs_to_run), 'one') }}
     steps:
       - name: print job name
         shell: bash
