@@ -55,7 +55,7 @@ jobs:
     steps:
       - name: test-job-one
         run: |
-          dostuff not found should fail
+          echo job one tested
 
   two:
     needs: [test_one]
