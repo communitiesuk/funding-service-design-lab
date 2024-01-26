@@ -49,13 +49,13 @@ jobs:
         shell: bash
         run: echo On job one
         
-  test_one:
+  test_one_fail:
     runs-on: ubuntu-latest
     needs: [one]
     steps:
       - name: test-job-one
         run: |
-          echo Job one tested
+          dostuff not found should fail
 
   two:
     needs: [test_one]
