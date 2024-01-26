@@ -1,0 +1,54 @@
+name: Test Matrix value
+
+on:
+    push:
+    workflow_dispatch:
+      inputs:
+        job:
+          description: Which job to force
+          type: choice
+          required: true
+          options:
+            - one
+            - two
+            - three
+
+jobs:
+  setup_job_list:
+    runs-on: ubuntu-latest
+    outputs:
+      jobs_to_run: ${{ steps.array.outputs.job_list }}
+    steps:
+      - id: determine_jobs
+        run: |
+          export jobs='["one", "two", "three"]'
+          echo "job_list=$(jq -cn --argjson keys "$jobs" '$keys')" >> $GITHUB_OUTPUT
+
+  debug-info:
+    runs-on: ubuntu-latest
+    needs: [setup_job_list]
+    steps:
+      - name: debug-jobs
+        env:
+          JOB_LIST: ${{ needs.setup_job_list.outputs.jobs_to_run }}
+        run: |
+          echo list of jobs is $JOB_LIST
+
+
+  one:
+    needs: [setup_job_list]
+    runs-on: ubuntu-latest
+    if: ${{ contains(fromJSON(needs.copilot_environments_workflow_setup.outputs.jobs_to_run), "one") }}
+    steps:
+      - name: print job name
+        shell: bash
+        run: echo On job one
+
+  two:
+    needs: [one]
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: print job name
+        shell: bash
+        run: echo On job two
