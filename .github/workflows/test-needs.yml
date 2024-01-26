@@ -50,7 +50,7 @@ jobs:
 
   two:
     needs: [one]
-    if: ${{ contains(fromJSON(needs.setup_job_list.outputs.jobs_to_run), 'two') }}
+    if: ${{ contains(fromJSON(needs.setup_job_list.outputs.jobs_to_run), 'two') && always() }}
     runs-on: ubuntu-latest
     steps:
 
