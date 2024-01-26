@@ -1,4 +1,5 @@
 name: Test job ordering
+run-name: Run jobs ${{ github.event.inputs.job }}
 
 on:
     push:
@@ -47,9 +48,17 @@ jobs:
       - name: print job name
         shell: bash
         run: echo On job one
+        
+  test_one:
+    runs-on: ubuntu-latest
+    needs: [one]
+    steps:
+      - name: test-job-one
+        run: |
+          echo Job one tested
 
   two:
-    needs: [one]
+    needs: [test_one]
     if: ${{ contains(fromJSON(needs.setup_job_list.outputs.jobs_to_run), 'two') && always() }}
     runs-on: ubuntu-latest
     steps:
