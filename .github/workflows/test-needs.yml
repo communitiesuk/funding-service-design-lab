@@ -17,7 +17,7 @@ jobs:
   setup_job_list:
     runs-on: ubuntu-latest
     outputs:
-      jobs_to_run: ${{ steps.array.outputs.job_list }}
+      jobs_to_run: ${{ steps.determine_jobs.outputs.job_list }}
     steps:
       - id: determine_jobs
         run: |
