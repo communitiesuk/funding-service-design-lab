@@ -21,7 +21,11 @@ jobs:
     steps:
       - id: determine_jobs
         run: |
-          export jobs='["one", "two", "three"]'
+          if [ "${{ inputs.job }}" != '' ]; then
+            export jobs='["${{ inputs.job }}"]'
+          else
+            export jobs='["one", "two", "three"]'
+          fi
           echo "job_list=$(jq -cn --argjson keys "$jobs" '$keys')" >> $GITHUB_OUTPUT
 
   debug-info:
