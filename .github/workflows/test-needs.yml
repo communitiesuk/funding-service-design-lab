@@ -59,8 +59,8 @@ jobs:
           fail
 
   two:
-    needs: [test_one]
-    if: ${{ always() && contains(fromJSON(needs.setup_job_list.outputs.jobs_to_run), 'two') && (needs.test_one.result == 'success' || needs.test_one.result == 'skipped') }}
+    needs: [test_one, one]
+    if: ${{ always() && contains(fromJSON(needs.setup_job_list.outputs.jobs_to_run), 'two') && (! contains(needs.*.result, 'failure') }}
     runs-on: ubuntu-latest
     steps:
 
